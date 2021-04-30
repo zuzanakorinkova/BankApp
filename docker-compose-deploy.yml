@@ -1,0 +1,70 @@
+version: '3.7'
+
+services:
+    db:
+        image: postgres:13-alpine
+        volumes:
+            - database:/var/lib/postgresql/data
+        env_file:
+            - conf/db/db_env
+        networks:
+            - database
+    app:
+        build:
+            context: .
+        ports:
+            - "8000:8000"
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/app/
+        environment:
+            - DJANGO_SETTINGS_MODULE
+        networks:
+            - app
+            - database
+        depends_on: 
+            - db
+
+volumes:
+    static:
+    media:
+    database:
+        
+networks:
+    database:
+    app:
+    # - static:/app/
+    # - media:/app/
+
+
+#     app:
+#         build: 
+#             context: .
+#         volumes:
+#             - .:/opt/services/app/src
+#             - static:/opt/services/app/static
+#             - media:/opt/services/app/media
+#         environment:
+#             - DJANGO_SETTINGS_MODULE
+#         networks:
+#             - frontend
+#             - backend
+#     proxy:
+#         build:
+#             context: ./proxy
+#         volumes:
+#             - static:/opt/services/app/static
+#             - media:/opt/services/app/media
+#         networks:
+#             - frontend
+#         ports:
+#             - "8080:8080"
+#         depends_on:
+#             - app
+# networks: front end, wolumes: static,media
+
+
+
+# networks:
+#     backend:
+#     frontend:

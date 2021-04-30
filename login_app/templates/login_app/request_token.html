@@ -1,0 +1,34 @@
+{% extends "login_app/base.html" %}
+
+{% block content %}
+<h1>Write token from your email</h1>
+<hr />
+<form action="{% url 'login_app:request_token' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="email" placeholder="Email">
+    <button type="submit" name="sendButton">Send</button>
+    <div>
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <p {% if message.tags %} class=" {{message.tags}}" {% endif %}>{{message}}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</form>
+<hr />
+<form action="{% url 'login_app:request_token' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="token" placeholder="Token">
+    <button type="submit" name="submitButton">Submit</button>
+</form>
+
+<hr />
+
+
+{% if error %}
+{{ error }}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "bank_app/base.html" %}
+
+
+{% block content %}
+{% include 'header/staff_header.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Create customer</h2>
+            <div>
+                <form action="{% url 'bank_app:staff' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" class="form-control mb-3" name="username" placeholder="Username">
+                    <input type="text" class="form-control mb-3" name="email" placeholder="Email">
+                    <input type="text" class="form-control mb-3" name="phone_number" placeholder="Phone number">
+                    <input type="password" class="form-control mb-3" name="password" placeholder="Password">
+                    <input type="password" class="form-control mb-3" name="confirm_password" placeholder="Password">
+                    <button type="submit">Create customer</button>
+                </form>
+                {% if messages %}
+                <div>
+                    {% for message in messages %}
+                    <p {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col">
+            <h2>List of Customers</h2>
+
+            {% for customer in all_customers %}
+            <div class="card p-4 mb-3" style="width: 20rem;">
+                <!--add link to customer details -->
+                <a href="{% url 'bank_app:staff_customer_details' customer.pk %}">
+                    <h5 class="card-title">{{ customer.username }}</h5>
+                    <p>Phone number: {{ customer.customer.phone_number }}</p>
+                    <p>Rank: {{ customer.customer.rank }}</p>
+                </a>
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

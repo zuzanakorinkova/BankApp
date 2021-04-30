@@ -1,0 +1,71 @@
+{% extends "bank_app/base.html" %}
+
+{% block content %}
+{% include 'header/staff_header.html' %}
+<h4>Details for {{customer.username}}</h4>
+<p>Phone number: {{customer.customer.phone_number}}</p>
+<p>Can make loan:
+    {% if customer.customer.can_make_loan %}
+    Yes
+    {% else %}
+    No
+    {% endif %} </p>
+<p>Rank: {{ customer.customer.rank }}</p>
+
+<form action="{% url 'bank_app:staff_customer_details' customer.pk %}" method="POST">
+    {% csrf_token %}
+    <label for="ranks">Assign different Rank:</label>
+    <select name="rank" id="rank">
+        <option value="" disabled selected>Rank</option>
+        {% for rank in ranks %}
+        <option value="{{ rank.pk }}">{{ rank.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Update rank</button>
+</form>
+
+<hr>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h5>Add Account for {{ customer.username }}</h5>
+            <form action="{% url 'bank_app:staff_customer_details' customer.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id="name" name="name" placeholder="Write account name">
+                <button type="submit">Create account</button>
+            </form>
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                <p {% if message.tags %} class=" {{message.tags}}" {% endif %}>{{message}}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div class="col">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Account Name</th>
+                        <th scope="col">Account Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in customer.customer.accounts %}
+                    <tr>
+                        <td>{{account.name}}</td>
+                        <!-- redirect to customer account details -->
+                        <td>{{ account.balance }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

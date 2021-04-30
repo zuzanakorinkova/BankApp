@@ -1,0 +1,37 @@
+{% extends "bank_app/base.html" %}
+
+
+{% block content %}
+{% include 'header/customer_header.html' %}
+<h2>Customer information</h2>
+<p>Rank: {{ customer.rank }}</p>
+<p>Eligible to make a loan:
+    {% if customer.can_make_loan %}
+    Yes
+    {% else %}
+    No
+    {% endif %}
+</p>
+
+<h2>Your overview</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Account Name</th>
+            <th scope="col">Account Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for account in customer.accounts %}
+        <tr>
+
+            <td> <a href="{% url 'bank_app:customer_account_details' account.pk %}">{{account.name}}</a></td>
+            <!-- redirect to customer account details -->
+            <td>{{ account.balance }}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+DB_USER=zuzana
+DB_PASSWORD=pgpassword
+DB_NAME=bank
+DB_HOST=db
+
+DEBUG=1
+SECRET_KEY=samplesecretkey123
+DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+SQL_ENGINE=django.db.backends.postgresql
+SQL_PORT=5432
